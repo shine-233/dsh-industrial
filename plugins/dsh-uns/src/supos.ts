@@ -6,7 +6,7 @@ interface HttpLike {
   json(): Promise<unknown>
 }
 
-function unwrapArray(payload: unknown): unknown[] {
+export function unwrapArray(payload: unknown): unknown[] {
   if (Array.isArray(payload)) return payload
   if (payload && typeof payload === 'object') {
     const obj = payload as Record<string, unknown>
@@ -19,7 +19,7 @@ function unwrapArray(payload: unknown): unknown[] {
   return []
 }
 
-function pickString(source: Record<string, unknown>, keys: string[]): string | undefined {
+export function pickString(source: Record<string, unknown>, keys: string[]): string | undefined {
   for (const key of keys) {
     const value = source[key]
     if (typeof value === 'string' && value.length > 0) return value
@@ -71,7 +71,7 @@ export class SuposAdapter implements UnsAdapter {
     if (prefix !== undefined && prefix.length > 0) body.key = prefix
     const result = await this.call('/open-api/uns/condition/tree', 'POST', body)
     const rows = unwrapArray(result.payload)
-    return rows.slice(0, limit).map((row) => this.toNode(row as Record<string, unknown>))
+    return rows.slice(0, limit).map((row) => toNode(row as Record<string, unknown>))
   }
 
   async describe(path: string): Promise<UnsNodeInfo> {
@@ -80,18 +80,18 @@ export class SuposAdapter implements UnsAdapter {
     const record = (byPath.payload && typeof byPath.payload === 'object'
       ? ((byPath.payload as Record<string, unknown>).data ?? byPath.payload)
       : {}) as Record<string, unknown>
-    if (record.path || record.alias || record.name) return this.toNode(record)
+    if (record.path || record.alias || record.name) return toNode(record)
     const fallback = await this.call(`/open-api/uns/file/${encodeURIComponent(path)}`, 'GET')
     const fallbackRecord = (fallback.payload && typeof fallback.payload === 'object'
       ? ((fallback.payload as Record<string, unknown>).data ?? fallback.payload)
       : {}) as Record<string, unknown>
-    return this.toNode(fallbackRecord)
+    return toNode(fallbackRecord)
   }
 
   async read(paths: string[]): Promise<UnsPoint[]> {
     const result = await this.call('/open-api/uns/file/current/batchQuery/byPath', 'POST', paths)
     const rows = unwrapArray(result.payload)
-    return rows.map((row) => this.toPoint(row as Record<string, unknown>))
+    return rows.map((row) => toPoint(row as Record<string, unknown>))
   }
 
   async write(path: string, value: unknown, timestampMs: number | undefined, field: string | undefined): Promise<void> {
@@ -108,7 +108,7 @@ export class SuposAdapter implements UnsAdapter {
     if (endMs !== undefined) body.endTime = endMs
     const result = await this.call('/open-api/uns/file/history/batch/query', 'POST', body)
     const rows = unwrapArray(result.payload)
-    return rows.map((row) => this.toPoint(row as Record<string, unknown>))
+    return rows.map((row) => toPoint(row as Record<string, unknown>))
   }
 
   async watch(topics: string[], durationMs: number, limit: number): Promise<UnsPoint[]> {
@@ -145,34 +145,34 @@ export class SuposAdapter implements UnsAdapter {
     }
     return points.slice(0, limit)
   }
+}
 
-  private toNode(record: Record<string, unknown>): UnsNodeInfo {
-    const path = pickString(record, ['path', 'fullPath', 'namePath']) ?? ''
-    const alias = pickString(record, ['alias', 'pathName', 'id'])
-    const pathType = typeof record.pathType === 'number' ? record.pathType : undefined
-    const kind = pathType === 0 ? 'folder' : pathType === 1 ? 'template' : pathType === 2 ? 'file' : undefined
-    const fieldsRaw = Array.isArray(record.fields) ? record.fields : []
-    const fields: UnsFieldDef[] = fieldsRaw.map((field) => {
-      const f = field as Record<string, unknown>
-      return {
-        name: String(f.name ?? ''),
-        type: typeof f.type === 'string' ? f.type : undefined,
-        unit: typeof f.unit === 'string' ? f.unit : undefined,
-      }
-    })
-    return { path, alias, kind, fields }
-  }
-
-  private toPoint(record: Record<string, unknown>): UnsPoint {
-    const path = pickString(record, ['path', 'topic', 'alias']) ?? ''
-    const timeRaw = record.timeStamp ?? record.timestamp ?? record.time
-    const timestampMs = typeof timeRaw === 'number' ? timeRaw : Number(timeRaw) || undefined
+export function toNode(record: Record<string, unknown>): UnsNodeInfo {
+  const path = pickString(record, ['path', 'fullPath', 'namePath']) ?? ''
+  const alias = pickString(record, ['alias', 'pathName', 'id'])
+  const pathType = typeof record.pathType === 'number' ? record.pathType : undefined
+  const kind = pathType === 0 ? 'folder' : pathType === 1 ? 'template' : pathType === 2 ? 'file' : undefined
+  const fieldsRaw = Array.isArray(record.fields) ? record.fields : []
+  const fields: UnsFieldDef[] = fieldsRaw.map((field) => {
+    const f = field as Record<string, unknown>
     return {
-      path,
-      value: record.value ?? record.currentValue ?? record,
-      timestampMs,
-      quality: record.status ?? record.qos,
-      raw: record,
+      name: String(f.name ?? ''),
+      type: typeof f.type === 'string' ? f.type : undefined,
+      unit: typeof f.unit === 'string' ? f.unit : undefined,
     }
+  })
+  return { path, alias, kind, fields }
+}
+
+export function toPoint(record: Record<string, unknown>): UnsPoint {
+  const path = pickString(record, ['path', 'topic', 'alias']) ?? ''
+  const timeRaw = record.timeStamp ?? record.timestamp ?? record.time
+  const timestampMs = typeof timeRaw === 'number' ? timeRaw : Number(timeRaw) || undefined
+  return {
+    path,
+    value: record.value ?? record.currentValue ?? record,
+    timestampMs,
+    quality: record.status ?? record.qos,
+    raw: record,
   }
 }

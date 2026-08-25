@@ -8,7 +8,7 @@ interface ParsedTopic {
   contract?: string
 }
 
-function parseTopic(topic: string): ParsedTopic {
+export function parseTopic(topic: string): ParsedTopic {
   if (!topic.startsWith(UMH_PREFIX)) return { path: topic }
   const rest = topic.slice(UMH_PREFIX.length)
   const segments = rest.split('.')
@@ -19,11 +19,11 @@ function parseTopic(topic: string): ParsedTopic {
   }
 }
 
-function fullTopic(path: string): string {
+export function fullTopic(path: string): string {
   return path.startsWith(UMH_PREFIX) ? path : `${UMH_PREFIX}${path}`
 }
 
-function parsePayload(value: Buffer): { value: unknown; timestampMs?: number } {
+export function parsePayload(value: Buffer): { value: unknown; timestampMs?: number } {
   try {
     const parsed = JSON.parse(value.toString('utf8')) as Record<string, unknown>
     if (parsed && typeof parsed === 'object' && 'value' in parsed) {

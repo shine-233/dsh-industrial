@@ -23,7 +23,7 @@
 
 - docker compose 起 Open supOS CE 与 umh-core 各一套，逐工具冒烟（含错误透传路径）。
 - 按实测修正 `supos.ts` 请求体/响应解包偏差（`unwrapArray` 兜底键名以真实响应为准）。
-- 补最小单测：`unwrapArray/pickString/toNode/toPoint/parseTopic/parsePayload` 纯函数 + mock fetch/Kafka。
+- 补最小单测 ✅（2026-08-25，`pnpm test` 24/24：`unwrapArray/pickString/toNode/toPoint/parseTopic/parsePayload` 纯函数 + mock fetch 的 browse/read/write/history/describe 请求形状与错误透传）。
 - 发布前锁定 dsh developer preview API 版本（ADR-001 后果条款）。
 
 ### M3 迁出与发布 ⬜
