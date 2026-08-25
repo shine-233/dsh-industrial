@@ -17,6 +17,8 @@ DeepSeek Harness（dsh）工业方向插件系列的项目主页：研究档案�
 
 首个插件 **dsh-uns** 已迁出为独立仓：[shine-233/dsh-uns](https://github.com/shine-233/dsh-uns)（统一 UNS 访问，supOS + UMH 双适配器）。
 
+配套可视化面板：[shine-233/dsh-uns-dashboard](https://github.com/shine-233/dsh-uns-dashboard)（命名空间树 / 实时曲线 / 写值，mock 模式开箱即用）。
+
 ## 当前状态
 
 - **dsh-uns v0.1**（[独立仓](https://github.com/shine-233/dsh-uns)）：骨架完成。6 个工具（browse/read/write/history/watch/describe）、双适配器、tsc 构建与模块加载验证通过。单元测试 24/24（`pnpm test`）。待真实平台实例实测。

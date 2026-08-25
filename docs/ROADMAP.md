@@ -34,6 +34,7 @@
 ### M4 生态扩展 ⬜
 
 - 见候选池。优先级依真实使用反馈排序，不做预支开发。
+- 2026-08-25 新增配套面板 [dsh-uns-dashboard](https://github.com/shine-233/dsh-uns-dashboard)：Node 代理后端复用 dsh-uns 适配器（mock/supos/umh 三源），前端零构建；真实平台接入仍以 M2 实测为前提。
 
 ## 二、插件候选池
 
