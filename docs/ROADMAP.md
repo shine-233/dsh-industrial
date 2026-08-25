@@ -26,9 +26,10 @@
 - 补最小单测 ✅（2026-08-25，`pnpm test` 24/24：`unwrapArray/pickString/toNode/toPoint/parseTopic/parsePayload` 纯函数 + mock fetch 的 browse/read/write/history/describe 请求形状与错误透传）。
 - 发布前锁定 dsh developer preview API 版本（ADR-001 后果条款）。
 
-### M3 迁出与发布 ⬜
+### M3 迁出与发布 ✅（2026-08-25 迁出完成）
 
-- 按 ADR-003 将 `plugins/dsh-uns` 迁出为独立仓 `shine-233/dsh-uns`（包根目录化，满足 `dsh plugin add github:` 约定），本仓保留文档与状态表。
+- 已按 ADR-003 迁出为独立仓 [shine-233/dsh-uns](https://github.com/shine-233/dsh-uns)（git subtree split 保留插件提交历史，包在根目录满足 `dsh plugin add github:` 约定），本仓保留文档与状态表，`plugins/` 目录已移除。
+- 剩余：真实平台实测通过后打 tag v0.1.0；可选 npm 发布（`dsh` 生态安装以 github: 为准，npm 非必需）。
 
 ### M4 生态扩展 ⬜
 
