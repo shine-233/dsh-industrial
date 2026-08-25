@@ -23,7 +23,8 @@
 
 - docker compose 起 Open supOS CE 与 umh-core 各一套，逐工具冒烟（含错误透传路径）。
 - 按实测修正 `supos.ts` 请求体/响应解包偏差（`unwrapArray` 兜底键名以真实响应为准）。
-- 补最小单测 ✅（2026-08-25，`pnpm test` 24/24：`unwrapArray/pickString/toNode/toPoint/parseTopic/parsePayload` 纯函数 + mock fetch 的 browse/read/write/history/describe 请求形状与错误透传）。
+- ✅ 单测：`pnpm test` 42/42（2026-08-25，纯函数 + mock fetch 请求形状与错误透传 + WS/写值/历史协议构造器）。
+- ✅ 静态对账（2026-08-25，源码级）：逐 DTO 核对 `UnsTreeCondition`/`UpdateFileDTO`/`HistoryValueRequest`/`UnsWebsocketHandler`，修复 v0.2 两处致命协议错误（write 误用 path、history 误造 paths/startTime 结构），watch 改平台 WS 订阅。**静态对账不能替代实测**，M2 冒烟仍为发布 v1.0 的硬性门槛。
 - 发布前锁定 dsh developer preview API 版本（ADR-001 后果条款）。
 
 ### M3 迁出与发布 ✅（2026-08-25 迁出完成）
