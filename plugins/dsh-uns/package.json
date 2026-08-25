@@ -25,7 +25,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/YOUR_GITHUB_USERNAME/dsh-uns.git"
+    "url": "git+https://github.com/shine-233/dsh-industrial.git"
   },
   "engines": {
     "node": ">=22.19"

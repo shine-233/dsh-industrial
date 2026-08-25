@@ -21,6 +21,7 @@ DeepSeek Harness（dsh）工业方向插件系列的项目主页：研究档案�
 
 - **dsh-uns v0.1**：骨架完成。6 个工具（browse/read/write/history/watch/describe）、双适配器、tsc 构建与模块加载验证通过。待真实平台实例实测。
 - 语言策略：插件 = TypeScript（dsh 宿主约束）；未来独立边缘组件 = Go。
+- 下一步与风险登记见 [docs/ROADMAP.md](docs/ROADMAP.md)。
 
 ## 快速开始
 
