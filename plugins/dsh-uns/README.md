@@ -7,11 +7,11 @@ DeepSeek Harness 插件：让 dsh agent 通过一套统一工具读写工业 UNS
 
 ## 安装
 
-当前为孵化期（随主页仓 [shine-233/dsh-industrial](https://github.com/shine-233/dsh-industrial) 发布），将本仓库克隆到本地后，在宿主 profile 中指向 `plugins/dsh-uns` 目录加载。成熟后按 ADR-003 迁出为独立仓，届时安装方式变为：
-
 ```sh
 dsh plugin --profile web add github:shine-233/dsh-uns
 ```
+
+研究档案与技术决策见主页仓 [shine-233/dsh-industrial](https://github.com/shine-233/dsh-industrial)。
 
 ## 配置（`~/.dsh/settings.yaml` 或 profile 配置）
 
