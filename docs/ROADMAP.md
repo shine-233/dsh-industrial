@@ -25,7 +25,8 @@
 - 按实测修正 `supos.ts` 请求体/响应解包偏差（`unwrapArray` 兜底键名以真实响应为准）。
 - ✅ 单测：`pnpm test` 42/42（2026-08-25，纯函数 + mock fetch 请求形状与错误透传 + WS/写值/历史协议构造器）。
 - ✅ 静态对账（2026-08-25，源码级）：逐 DTO 核对 `UnsTreeCondition`/`UpdateFileDTO`/`HistoryValueRequest`/`UnsWebsocketHandler`，修复 v0.2 两处致命协议错误（write 误用 path、history 误造 paths/startTime 结构），watch 改平台 WS 订阅。**静态对账不能替代实测**，M2 冒烟仍为发布 v1.0 的硬性门槛。
-- ✅ 管理面封装（v0.4.0）：`uns_admin` 覆盖节点/模板/标签 CRUD、schema 查询、打标摘标（`CreateFileDto`/`CreateTemplateVo`/`MakeLabelDto` 等 DTO 对账完成）；`enableManagement` 默认关闭，破坏性操作不默认暴露给 agent。`/open-api/rest/sql` 直通维持 R4 明确不做。
+- ✅ 管理面封装（v0.4.0）：`uns_admin` 覆盖节点/模板/标签 CRUD、schema 查询、打标摘标（`CreateFileDto`/`CreateTemplateVo`/`MakeLabelDto` 等 DTO 对账完成）；`enableManagement` 默认关闭，破坏性操作不默认暴露给 agent。
+- ✅ 全量对账收尾（v0.5.0）：逐 Controller 扫描全部 `/open-api/**` 端点，补 blob 值读取（`FileBlobDataQueryDto`）与事件流有界订阅（`/open-api/uns/event/ws` cmd=5，服务端 cmd=6 发布未实现）；平台治理面（user/todo/plugin/systemConfig/menu/auth）与 `/open-api/rest/sql`（R4）明确排除。`/open-api/**` 至此无未决端点。
 - 发布前锁定 dsh developer preview API 版本（ADR-001 后果条款）。
 
 ### M3 迁出与发布 ✅（2026-08-25 迁出完成）
